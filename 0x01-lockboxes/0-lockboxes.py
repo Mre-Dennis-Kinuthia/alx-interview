@@ -6,23 +6,32 @@ def canUnlockAll(boxes):
     """
     Function to determine if all boxes can be open with the keys available
     """
-    given_keys = boxes[0]
-    all_keys = []
-    for count, key in enumerate(given_keys, 1):
-        all_keys = given_keys.copy()
-        if key < len(boxes) and not boxes[key]:
-            all_keys.append(0)
-        else:
-            all_keys.extend(boxes[key])
+    if not boxes:
+        return False
 
-        # Removing duplicate keys
-        for i in all_keys:
-            if i not in given_keys and i < len(boxes):
-                given_keys.append(i)
-            if 0 not in given_keys:
-                given_keys.append(0)
+    n = len(boxes)
+    visited = [False] * n
+    visited[0] = True  # The first box is unlocked initially
 
-        if (count == len(boxes)):
-            return True
+    stack = [0]  # Start with the first box
 
-    return False
+    while stack:
+        box = stack.pop()
+        for key in boxes[box]:
+            if 0 <= key < n and not visited[key]:
+                visited[key] = True
+                stack.append(key)
+
+    return all(visited)  # Check if all boxes are visited
+
+
+# Test cases
+if __name__ == "__main__":
+    boxes1 = [[1], [2], [3], [4], []]
+    print(canUnlockAll(boxes1))  # Output: True
+
+    boxes2 = [[1, 4, 6], [2], [0, 4, 1], [5, 6, 2], [3], [4, 1], [6]]
+    print(canUnlockAll(boxes2))  # Output: True
+
+    boxes3 = [[1, 4], [2], [0, 4, 1], [3], [], [4, 1], [5, 6]]
+    print(canUnlockAll(boxes3))  # Output: False
