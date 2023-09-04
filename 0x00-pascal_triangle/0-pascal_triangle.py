@@ -1,6 +1,10 @@
 #!/usr/bin/python3
+"""
+Pascal's Triangle Implementation
+"""
 
 def pascal_triangle(n):
+    """Returns the factorial of an integer"""
     if n <= 0:
         return []
 
