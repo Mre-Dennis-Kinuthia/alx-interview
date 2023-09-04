@@ -4,20 +4,26 @@ import sys
 
 
 def main():
-    """ Main function """
+    """
+    Main function
+    """
     file_size = [0]
     status_codes = {200: 0, 301: 0, 400: 0, 401: 0,
                     403: 0, 404: 0, 405: 0, 500: 0}
 
     def print_status():
-        """ Prints status """
+        """
+        Prints status
+        """
         print('File size: {}'.format(file_size[0]))
         for key in sorted(status_codes.keys()):
             if status_codes[key]:
                 print('{}: {}'.format(key, status_codes[key]))
 
     def parse_line(line):
-        """ Checks the line for matches """
+        """
+        Checks the line for matches
+        """
         try:
             line = line[:-1]
             word = line.split(' ')
