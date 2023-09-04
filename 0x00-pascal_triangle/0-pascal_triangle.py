@@ -3,6 +3,7 @@
 Pascal's Triangle Implementation
 """
 
+
 def pascal_triangle(n):
     """Returns the factorial of an integer"""
     if n <= 0:
@@ -21,6 +22,7 @@ def pascal_triangle(n):
         triangle.append(row)
 
     return triangle
+
 
 # Test cases
 if __name__ == "__main__":
