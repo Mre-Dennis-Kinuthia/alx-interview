@@ -1,22 +1,17 @@
 #!/usr/bin/python3
 """
-Rotate 2D Matrix Interview Question
+This module contains a function that rotates a 2D matrix by 90 degrees
+in a clockwise direction
 """
 
 
 def rotate_2d_matrix(matrix):
-    """
-    Given an n x n 2D matrix, rotate it 90 degrees clockwise
-    """
+    """function that rotates a 2D matrix by 90 degrees"""
     n = len(matrix)
-    for i in range(n):
-        for j in range(i):
+    for i in range(n - 1):
+        for j in range(i, n - 1 - i):
             temp = matrix[i][j]
-            matrix[i][j] = matrix[j][i]
-            matrix[j][i] = temp
-
-    for i in range(n):
-        for j in range(n // 2):
-            temp = matrix[i][j]
-            matrix[i][j] = matrix[i][n - j - 1]
-            matrix[i][n - j - 1] = temp
+            matrix[i][j] = matrix[n - 1 - j][i]
+            matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j]
+            matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i]
+            matrix[j][n - 1 - i] = temp

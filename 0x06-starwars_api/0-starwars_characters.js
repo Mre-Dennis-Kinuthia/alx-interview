@@ -1,42 +1,44 @@
 #!/usr/bin/node
-
-/*
-* Prints all characters of a Star Wars movie
-* The first positional argument passed is the Movie ID - example: 3 = “Return of the Jedi”
-* Displays one character name per line in the same order as the “characters” list in the /films/ endpoint
-*/
-
+/**
+ * a script that prints all characters of a Star Wars movie
+ * use star wars api
+ */
 const request = require('request');
-
-const arg = Number(process.argv[2]);
-const url = 'https://swapi-api.alx-tools.com/api/films/' + arg;
-
-if (arg === undefined || isNaN(arg)) {
-  console.log('Usage: ./0-starwars_characters NUM');
+const film_id = process.argv[2];
+if (!film_id  || isNaN(film_id)) {
   process.exit(1);
 }
+const url = `https://swapi-api.hbtn.io/api/films/${film_id}`;
 
-request(url, async (error, response, body) => {
+request(url, (error, res, body) => {
   if (error) {
-    console.error('Error: ', error);
+    console.log(error);
     return;
   }
+  const characterList = [];
 
-  const parsedBody = JSON.parse(body);
-  const characters = parsedBody.characters;
+  const json = JSON.parse(body);
+  const characters = json.characters;
 
-  for (let i = 0; i < characters.length; i++) {
-    await new Promise((resolve, reject) => {
-      request(characters[i], (error, response, body) => {
+  characters.forEach((character) => {
+    const url = character;
+    const promise = new Promise((resolve, reject) => {
+      request(url, (error, response, body) => {
         if (error) {
-          console.error('Error: ', error);
+          reject(error);
           return;
         }
-
-        const parsedCharacter = JSON.parse(body);
-        console.log(parsedCharacter.name);
-        resolve();
+        const json = JSON.parse(body);
+        resolve(json.name);
       });
     });
-  }
+    characterList.push(promise);
+  });
+  Promise.all(characterList).then((values) => {
+    values.forEach((value) => {
+      console.log(value);
+    });
+  }).catch((error) => {
+    console.log(error);
+  });
 });
